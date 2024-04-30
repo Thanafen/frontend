@@ -9,23 +9,23 @@ import "./App.css";
 import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const pinAddSuccess = () => {
-  toast.success("Added pin!")
-}
+  toast.success("Added pin!");
+};
 
 const userNotLoggedIn = () => {
-  toast.warning("Log into account to make pins")
-}
+  toast.warning("Log into account to make pins");
+};
 
 const userLoggedOut = (userS) => {
-  toast.warning("Logout from "+userS)
-}
+  toast.warning("Logout from " + userS);
+};
 
 const pinAddFailure = () => {
-  toast.error("Couldnt add pin. Please fill all data fields")
-}
+  toast.error("Couldnt add pin. Please fill all data fields");
+};
 
 function App() {
   const [pins, setPins] = React.useState([]);
@@ -49,10 +49,10 @@ function App() {
     setCurrentPlaceId(id);
   };
 
-  const handleLogout = () =>{
+  const handleLogout = () => {
     userLoggedOut(currentUser);
-    setCurrentUser(null)
-  }
+    setCurrentUser(null);
+  };
 
   React.useEffect(() => {
     const getPins = async () => {
@@ -84,27 +84,26 @@ function App() {
       rating: rating,
       descr: descr,
       lat: newPlace.lat,
-      lon: newPlace.lng
-    }
+      lon: newPlace.lng,
+    };
 
     try {
-      if(!currentUser){
+      if (!currentUser) {
         userNotLoggedIn();
-      }else{
-        const res = await axios.post("/pins", newPin)
-        setPins([...pins,res.data])
-        setNewPlace(null)
+      } else {
+        const res = await axios.post("/pins", newPin);
+        setPins([...pins, res.data]);
+        setNewPlace(null);
 
+        pinAddSuccess();
 
-        pinAddSuccess()
-
-        setRating(1)
-        setDescr(null)
-        setTitle(null)
+        setRating(1);
+        setDescr(null);
+        setTitle(null);
       }
     } catch (err) {
       pinAddFailure();
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -119,19 +118,25 @@ function App() {
         mapStyle="mapbox://styles/thanafen/clvh6ht4m018h01qr01sl64a8"
         onDblClick={handleAddClick}
       >
-
-        <ToastContainer
-        position="top-left"
-        theme="dark"/>
+        <ToastContainer position="top-left" theme="dark" />
         <NavigationControl></NavigationControl>
 
         {pins.map((p) => (
           <>
-            <Marker longitude={p.lon} latitude={p.lat} anchor="center">
+            <Marker
+              key={p._id}
+              longitude={p.lon}
+              latitude={p.lat}
+              anchor="center"
+              data-id={p._id} // Add a data attribute with the _id of the pin
+            >
               <LocationOnIcon
                 className="icon"
                 onClick={() => handleMarkerClicked(p._id, p.lat, p.lon)}
-                style={{ fontSize: viewPort.zoom * 2, color: p.userName ===currentUser ? "tomato": "slateblue" }}
+                style={{
+                  fontSize: viewPort.zoom * 2,
+                  color: p.userName === currentUser ? "tomato" : "slateblue",
+                }}
               />
             </Marker>
             {p._id === currentPlaceId && (
@@ -204,19 +209,36 @@ function App() {
       <div className="footer">
         <div className="footer_down">
           {currentUser ? (
-            <button className="button logout" onClick={handleLogout}>Log out</button>
+            <button className="button logout" onClick={handleLogout}>
+              Log out
+            </button>
           ) : (
             <div>
-              <button className="button login" onClick={() =>{setShowLogin(true)}}>Login</button>
+              <button
+                className="button login"
+                onClick={() => {
+                  setShowLogin(true);
+                }}
+              >
+                Login
+              </button>
 
-              <button className="button register" onClick={() =>{setShowRegister(true)}}>Register</button>
+              <button
+                className="button register"
+                onClick={() => {
+                  setShowRegister(true);
+                }}
+              >
+                Register
+              </button>
             </div>
           )}
         </div>
       </div>
-      {showRegister && <Register setShowRegister={setShowRegister}/>}
-        {showLogin && <Login setShowLogin={setShowLogin} setCurrentUser = {setCurrentUser}/>}
-
+      {showRegister && <Register setShowRegister={setShowRegister} />}
+      {showLogin && (
+        <Login setShowLogin={setShowLogin} setCurrentUser={setCurrentUser} />
+      )}
     </div>
   );
 }

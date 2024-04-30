@@ -1,18 +1,18 @@
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import React, { useRef } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
-import "../Register.css"
+import "./Register.css"
 import axios from "axios";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 
 const userRegisterSuccess = () =>{
-    toast.success("Registered Successfully")
+    toast.success("Registered Successfully!")
 }
 
 const userRegisterFail = () =>{
-    toast.success("Failed to Register")
+    toast.error("Failed to Register!")
 }
 const Register = ({setShowRegister}) => {
 

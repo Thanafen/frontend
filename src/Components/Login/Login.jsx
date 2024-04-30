@@ -9,11 +9,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const userRegisterSuccess = () => {
-    toast.success("Login successfully!")
+    toast.success("Login Successfully!")
   }
   
   const userRegisterFail = () => {
-    toast.error("Login failed!")
+    toast.error("Login Failed!")
   }
 
 export default function Login({setShowLogin,setCurrentUser})
